@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConsertaAI - Plataforma de Zeladoria Urbana</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <h1 class="logo">ConsertaAI</h1>
+            <p class="subtitle">Zeladoria Urbana Inteligente com Java 21 e Spring Boot 3</p>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <!-- Secao 1: Triagem Inteligente com IA -->
+        <section class="card">
+            <h2 class="card-title">Triagem de Relatos com Inteligencia Artificial</h2>
+            <p class="card-description">Digite ou cole o relato do cidadao para que o modelo de IA identifique a categoria e o nivel de urgencia automaticamente.</p>
+            
+            <div class="form-group">
+                <label for="relatoIa">Relato do Cidadao:</label>
+                <textarea id="relatoIa" rows="3" placeholder="Ex: Cratera na pista direita proximo a avenida principal causando risco de acidentes"></textarea>
+            </div>
+            
+            <button id="btnTriagemIa" class="btn btn-secondary">Executar Triagem com IA</button>
+            
+            <div id="resultadoIa" class="ia-result hidden">
+                <h3>Resultado da Analise da IA</h3>
+                <p><strong>Categoria Sugerida:</strong> <span id="iaCategoria">-</span></p>
+                <p><strong>Prioridade Calculada:</strong> <span id="iaPrioridade">-</span></p>
+                <p><strong>Justificativa da IA:</strong> <span id="iaJustificativa">-</span></p>
+                <button id="btnAplicarIa" class="btn btn-small">Preencher Formulario com estes Dados</button>
+            </div>
+        </section>
+
+        <!-- Secao 2: Formulario de Registro de Ocorrencia -->
+        <section class="card">
+            <h2 class="card-title">Registrar Nova Ocorrencia</h2>
+            <form id="formOcorrencia">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="categoria">Categoria:</label>
+                        <select id="categoria" required>
+                            <option value="">Selecione...</option>
+                            <option value="BURACO_VIA">BURACO_VIA (Buraco na Via)</option>
+                            <option value="ILUMINACAO_PUBLICA">ILUMINACAO_PUBLICA (Iluminacao Publica)</option>
+                            <option value="LIXO_ACUMULADO">LIXO_ACUMULADO (Lixo Acumulado)</option>
+                            <option value="OUTRO">OUTRO (Geral)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="endereco">Endereco / Ponto de Referencia:</label>
+                        <input type="text" id="endereco" placeholder="Ex: Av. Paulista, 1000" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descricao da Ocorrencia:</label>
+                    <textarea id="descricao" rows="2" placeholder="Descreva o problema observado no local" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="latitude">Latitude:</label>
+                        <input type="number" step="any" id="latitude" value="-23.5614" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude:</label>
+                        <input type="number" step="any" id="longitude" value="-46.6559" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Registrar Ocorrencia</button>
+            </form>
+        </section>
+
+        <!-- Secao 3: Painel de Ocorrencias e Ciclo de Vida -->
+        <section class="card">
+            <div class="card-header-flex">
+                <h2 class="card-title">Painel de Ocorrencias Registradas</h2>
+                <button id="btnAtualizarLista" class="btn btn-small">Atualizar Lista</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Protocolo</th>
+                            <th>Categoria</th>
+                            <th>Prioridade</th>
+                            <th>Status Atual</th>
+                            <th>Endereco</th>
+                            <th>Acoes (Maquina de Estados)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaOcorrencias">
+                        <tr>
+                            <td colspan="6" class="text-center">Carregando ocorrencias...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>ConsertaAI | Desenvolvido por <strong>Erica Leandra Da Silva</strong></p>
+            <p><a href="/swagger-ui.html" target="_blank">Documentacao OpenAPI (Swagger)</a></p>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
