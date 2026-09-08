@@ -5,10 +5,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * 🏛️ DOMAIN ENTITY (Rich Model)
- *
- * Entidade rica com construtor protegido, transições de estado estritas (State Pattern)
- * e criação via Factory Method.
+ * Entidade de Dominio Rica (Rich Domain Model).
+ * Encapsula as regras de negocio e protege a transicao de estados (State Pattern).
  */
 public final class Ocorrencia {
 
@@ -23,18 +21,18 @@ public final class Ocorrencia {
 
     public Ocorrencia(UUID protocolo, Categoria categoria, String descricao, String enderecoOuReferencia,
                       double latitude, double longitude, Prioridade prioridade, StatusOcorrencia status) {
-        this.protocolo = Objects.requireNonNull(protocolo, "protocolo é obrigatório");
-        this.categoria = Objects.requireNonNull(categoria, "categoria é obrigatória");
-        this.descricao = Objects.requireNonNullElse(descricao, "Sem descrição informada");
-        this.enderecoOuReferencia = Objects.requireNonNull(enderecoOuReferencia, "endereço/referência é obrigatório");
+        this.protocolo = Objects.requireNonNull(protocolo, "protocolo e obrigatorio");
+        this.categoria = Objects.requireNonNull(categoria, "categoria e obrigatoria");
+        this.descricao = Objects.requireNonNullElse(descricao, "Sem descricao informada");
+        this.enderecoOuReferencia = Objects.requireNonNull(enderecoOuReferencia, "endereco ou referencia e obrigatorio");
         this.latitude = latitude;
         this.longitude = longitude;
         this.prioridade = Objects.requireNonNullElse(prioridade, Prioridade.MEDIA);
-        this.status = Objects.requireNonNull(status, "status é obrigatório");
+        this.status = Objects.requireNonNull(status, "status e obrigatorio");
     }
 
     /**
-     * 🏭 Factory Method para criar ocorrência no estado inicial Aberta.
+     * Factory Method para criacao de nova ocorrencia no estado inicial Aberta.
      */
     public static Ocorrencia registrar(Categoria categoria, String descricao, String enderecoOuReferencia,
                                        double latitude, double longitude, Prioridade prioridade) {
@@ -51,8 +49,7 @@ public final class Ocorrencia {
     }
 
     /**
-     * 🏛️ DESIGN PATTERN: State Pattern com Pattern Matching (Java 21)
-     * Valida transições de ciclo de vida de forma estrita.
+     * Valida e executa a transicao de estado usando pattern matching.
      */
     public void avancarPara(StatusOcorrencia novoStatus) {
         boolean valido = switch (this.status) {
@@ -64,7 +61,7 @@ public final class Ocorrencia {
 
         if (!valido) {
             throw new IllegalStateException(
-                    "Transição de estado inválida: %s -> %s".formatted(this.status, novoStatus));
+                    "Transicao de estado invalida: %s -> %s".formatted(this.status, novoStatus));
         }
         this.status = novoStatus;
     }

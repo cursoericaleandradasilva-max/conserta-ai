@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 🏛️ CONTEXTO DO STRATEGY PATTERN:
- * O Spring injeta automaticamente todas as implementações de PriorizacaoStrategy.
+ * Contexto do Strategy Pattern gerenciado pelo Spring.
  */
 @Service
 public class PriorizacaoStrategyContext {

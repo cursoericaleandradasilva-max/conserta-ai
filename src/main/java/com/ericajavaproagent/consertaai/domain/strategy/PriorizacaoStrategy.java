@@ -4,9 +4,8 @@ import com.ericajavaproagent.consertaai.domain.model.Categoria;
 import com.ericajavaproagent.consertaai.domain.model.Prioridade;
 
 /**
- * 🏛️ DESIGN PATTERN: Strategy Pattern (GoF)
- *
- * Define o contrato para diferentes algoritmos e regras de negócio de priorização.
+ * Strategy Pattern (GoF).
+ * Contrato para algoritmos de calculo de prioridade de ocorrencias.
  */
 public interface PriorizacaoStrategy {
 

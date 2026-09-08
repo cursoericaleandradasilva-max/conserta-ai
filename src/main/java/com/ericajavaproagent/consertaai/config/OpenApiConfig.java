@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 📖 Configuração do Swagger / OpenAPI 3 do ConsertaAI.
+ * Configuracao da documentacao OpenAPI 3 / Swagger.
  */
 @Configuration
 public class OpenApiConfig {
@@ -19,9 +19,9 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("ConsertaAI - API de Zeladoria Urbana Inteligente")
                         .version("1.0.0")
-                        .description("Plataforma de zeladoria urbana desenvolvida com Java 21, Spring Boot 3, GoF Design Patterns (State, Strategy, Facade, Template Method, Adapter) e Inteligência Artificial.")
+                        .description("Plataforma RESTful de zeladoria urbana desenvolvida com Java 21, Spring Boot 3, Design Patterns GoF e Inteligencia Artificial.")
                         .contact(new Contact()
-                                .name("Erica Leandra Da Silva - Engenheira de Software Java")
+                                .name("Erica Leandra Da Silva")
                                 .url("https://github.com/cursoericaleandradasilva-max"))
                         .license(new License()
                                 .name("Apache 2.0")

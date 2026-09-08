@@ -3,10 +3,8 @@ package com.ericajavaproagent.consertaai.domain.model;
 import java.time.LocalDateTime;
 
 /**
- * 🏛️ DESIGN PATTERN: State Pattern com Sealed Interface (Java 21)
- *
- * Representa os estados da Ocorrência garantindo que cada estado carregue dados
- * semânticos próprios de forma tipada e exaustiva.
+ * State Pattern com Sealed Interface (Java 21).
+ * Representa os estados da Ocorrencia garantindo tipagem estrita e imutabilidade.
  */
 public sealed interface StatusOcorrencia
         permits StatusOcorrencia.Aberta,

@@ -1,6 +1,9 @@
 package com.ericajavaproagent.consertaai.application.facade;
 
-import com.ericajavaproagent.consertaai.application.usecase.*;
+import com.ericajavaproagent.consertaai.application.usecase.AvancarStatusOcorrenciaUseCase;
+import com.ericajavaproagent.consertaai.application.usecase.ConsultarOcorrenciaUseCase;
+import com.ericajavaproagent.consertaai.application.usecase.RegistrarOcorrenciaUseCase;
+import com.ericajavaproagent.consertaai.application.usecase.TriagemComIaUseCase;
 import com.ericajavaproagent.consertaai.domain.model.Categoria;
 import com.ericajavaproagent.consertaai.domain.model.Ocorrencia;
 import com.ericajavaproagent.consertaai.domain.model.StatusOcorrencia;
@@ -11,9 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 🏛️ DESIGN PATTERN: Facade Pattern (GoF)
- *
- * Oferece uma interface simplificada e unificada para o subsistema de casos de uso do ConsertaAI.
+ * Facade Pattern (GoF).
+ * Fornece interface unificada para os casos de uso do sistema.
  */
 @Service
 public class ConsertaAiFacade {

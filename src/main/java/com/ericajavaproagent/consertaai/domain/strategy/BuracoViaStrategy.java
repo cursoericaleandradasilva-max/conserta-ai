@@ -5,8 +5,7 @@ import com.ericajavaproagent.consertaai.domain.model.Prioridade;
 import org.springframework.stereotype.Component;
 
 /**
- * 🏛️ Estratégia concreta para Buracos em Vias Públicas.
- * Se a descrição indicar risco de acidentes ou cratera, a prioridade sobe para CRÍTICA.
+ * Estrategia de priorizacao para a categoria BURACO_VIA.
  */
 @Component
 public class BuracoViaStrategy implements PriorizacaoStrategy {

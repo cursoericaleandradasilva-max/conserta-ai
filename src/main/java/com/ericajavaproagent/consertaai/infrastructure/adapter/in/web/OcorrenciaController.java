@@ -10,21 +10,22 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * 🌐 CONTROLLER REST (Inbound Adapter):
- * Comunica com a aplicação através da Fachada (Facade Pattern).
+ * Controller RESTful para gerenciamento de ocorrencias urbanas.
+ * Segue as melhores praticas RESTful: substantivos no plural, retorno de Location Header no 201 Created.
  */
 @RestController
 @RequestMapping("/api/v1/ocorrencias")
-@Tag(name = "🏙️ Ocorrências de Zeladoria Urbana", description = "Endpoints para registro, consulta e transição de estados de ocorrências urbanas")
+@Tag(name = "Ocorrencias", description = "Endpoints para registro, consulta e ciclo de vida de ocorrencias de zeladoria urbana")
 public class OcorrenciaController {
 
     private final ConsertaAiFacade facade;
@@ -33,8 +34,8 @@ public class OcorrenciaController {
         this.facade = facade;
     }
 
-    @Operation(summary = "Registrar nova ocorrência", description = "Cria uma ocorrência calculando a prioridade automaticamente via Strategy Pattern.")
-    @ApiResponse(responseCode = "201", description = "Ocorrência registrada com sucesso")
+    @Operation(summary = "Registrar nova ocorrencia", description = "Cria uma ocorrencia calculando a prioridade automaticamente via Strategy Pattern.")
+    @ApiResponse(responseCode = "201", description = "Ocorrencia criada com sucesso")
     @PostMapping
     public ResponseEntity<OcorrenciaResponseDTO> registrar(@Valid @RequestBody RegistrarOcorrenciaRequestDTO dto) {
         Ocorrencia ocorrencia = facade.registrarOcorrencia(
@@ -44,19 +45,25 @@ public class OcorrenciaController {
                 dto.latitude(),
                 dto.longitude()
         );
-        return ResponseEntity.status(HttpStatus.CREATED).body(OcorrenciaResponseDTO.fromDomain(ocorrencia));
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{protocolo}")
+                .buildAndExpand(ocorrencia.getProtocolo())
+                .toUri();
+
+        return ResponseEntity.created(location).body(OcorrenciaResponseDTO.fromDomain(ocorrencia));
     }
 
-    @Operation(summary = "Consultar ocorrência por protocolo", description = "Retorna os detalhes e o estado atual da ocorrência.")
-    @ApiResponse(responseCode = "200", description = "Ocorrência encontrada")
-    @ApiResponse(responseCode = "404", description = "Protocolo não encontrado")
+    @Operation(summary = "Consultar ocorrencia por protocolo", description = "Retorna os detalhes e o estado atual da ocorrencia.")
+    @ApiResponse(responseCode = "200", description = "Ocorrencia encontrada")
+    @ApiResponse(responseCode = "404", description = "Protocolo nao encontrado")
     @GetMapping("/{protocolo}")
     public ResponseEntity<OcorrenciaResponseDTO> buscarPorProtocolo(@PathVariable UUID protocolo) {
         Ocorrencia ocorrencia = facade.buscarPorProtocolo(protocolo);
         return ResponseEntity.ok(OcorrenciaResponseDTO.fromDomain(ocorrencia));
     }
 
-    @Operation(summary = "Listar todas as ocorrências", description = "Retorna a lista completa de ocorrências registradas na cidade.")
+    @Operation(summary = "Listar todas as ocorrencias", description = "Retorna a lista de todas as ocorrencias cadastradas.")
     @GetMapping
     public ResponseEntity<List<OcorrenciaResponseDTO>> listarTodas() {
         List<OcorrenciaResponseDTO> lista = facade.listarTodas().stream()
@@ -65,19 +72,19 @@ public class OcorrenciaController {
         return ResponseEntity.ok(lista);
     }
 
-    @Operation(summary = "Avançar estado da ocorrência", description = "Executa a transição da máquina de estados (Aberta -> EmAnalise -> Resolvida -> Reaberta).")
+    @Operation(summary = "Avancar estado da ocorrencia", description = "Executa a transicao na maquina de estados (State Pattern).")
     @ApiResponse(responseCode = "200", description = "Estado atualizado com sucesso")
-    @ApiResponse(responseCode = "400", description = "Transição de estado inválida segundo as regras de negócio")
+    @ApiResponse(responseCode = "400", description = "Transicao de estado invalida")
     @PatchMapping("/{protocolo}/status")
     public ResponseEntity<OcorrenciaResponseDTO> avancarStatus(
             @PathVariable UUID protocolo,
             @Valid @RequestBody AvancarStatusRequestDTO dto) {
 
         StatusOcorrencia novoStatus = switch (dto.novoStatusTipo().toUpperCase()) {
-            case "EM_ANALISE" -> new StatusOcorrencia.EmAnalise(LocalDateTime.now(), dto.responsavel() != null ? dto.responsavel() : "Equipe Padrão");
-            case "RESOLVIDA" -> new StatusOcorrencia.Resolvida(LocalDateTime.now(), dto.observacaoOuMotivo() != null ? dto.observacaoOuMotivo() : "Serviço Concluído");
+            case "EM_ANALISE" -> new StatusOcorrencia.EmAnalise(LocalDateTime.now(), dto.responsavel() != null ? dto.responsavel() : "Equipe Padrao");
+            case "RESOLVIDA" -> new StatusOcorrencia.Resolvida(LocalDateTime.now(), dto.observacaoOuMotivo() != null ? dto.observacaoOuMotivo() : "Servico Concluido");
             case "REABERTA" -> new StatusOcorrencia.Reaberta(LocalDateTime.now(), dto.observacaoOuMotivo() != null ? dto.observacaoOuMotivo() : "Problema Persiste");
-            default -> throw new IllegalArgumentException("Tipo de status inválido: " + dto.novoStatusTipo());
+            default -> throw new IllegalArgumentException("Tipo de status invalido: " + dto.novoStatusTipo());
         };
 
         Ocorrencia atualizada = facade.avancarStatus(protocolo, novoStatus);

@@ -7,8 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * 🏛️ PORT (Clean Architecture / Inversão de Dependência):
- * Define as operações de persistência sem saber como elas são implementadas.
+ * Output Port para persistencia de ocorrencias (Clean Architecture).
  */
 public interface RepositorioOcorrencia {
 

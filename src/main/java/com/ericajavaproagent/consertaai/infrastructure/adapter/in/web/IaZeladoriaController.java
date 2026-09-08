@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 🤖 CONTROLLER REST DE INTELIGÊNCIA ARTIFICIAL:
- * Expõe triagem e classificação inteligente de relatos do cidadão.
+ * Controller RESTful de Inteligencia Artificial.
  */
 @RestController
-@RequestMapping("/api/v1/ia")
-@Tag(name = "🤖 Triagem com Inteligência Artificial", description = "Classificação automática de categoria e nível de prioridade a partir de linguagem natural")
+@RequestMapping("/api/v1/triagens-ia")
+@Tag(name = "Triagens IA", description = "Classificacao automatica de relatos com Inteligencia Artificial")
 public class IaZeladoriaController {
 
     private final ConsertaAiFacade facade;
@@ -27,8 +26,8 @@ public class IaZeladoriaController {
         this.facade = facade;
     }
 
-    @Operation(summary = "Triagem automática com IA", description = "Recebe um relato em texto ou áudio transcrito e retorna a categoria e prioridade sugeridas.")
-    @PostMapping("/triagem")
+    @Operation(summary = "Executar triagem automatica com IA", description = "Recebe um relato e retorna a categoria e prioridade sugeridas.")
+    @PostMapping
     public ResponseEntity<IaClassifierPort.IaTriagemResult> triagemComIa(@Valid @RequestBody IaTriagemRequestDTO dto) {
         IaClassifierPort.IaTriagemResult resultado = facade.analisarRelatoComIa(dto.relato());
         return ResponseEntity.ok(resultado);

@@ -4,7 +4,7 @@ import com.ericajavaproagent.consertaai.domain.model.Categoria;
 import com.ericajavaproagent.consertaai.domain.model.Prioridade;
 
 /**
- * 🏛️ PORT: Contrato para integração com o modelo de Inteligência Artificial.
+ * Output Port para o servico de classificacao e triagem por Inteligencia Artificial.
  */
 public interface IaClassifierPort {
 

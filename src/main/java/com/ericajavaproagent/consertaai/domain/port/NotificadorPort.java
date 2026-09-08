@@ -3,7 +3,7 @@ package com.ericajavaproagent.consertaai.domain.port;
 import com.ericajavaproagent.consertaai.domain.model.Ocorrencia;
 
 /**
- * 🏛️ PORT: Contrato para notificação do cidadão e equipes públicas.
+ * Output Port para notificacao de eventos.
  */
 public interface NotificadorPort {
 
