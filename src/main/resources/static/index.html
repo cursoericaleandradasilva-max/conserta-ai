@@ -7,109 +7,233 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container header-container">
-            <h1 class="logo">ConsertaAI</h1>
-            <p class="subtitle">Zeladoria Urbana Inteligente com Java 21 e Spring Boot 3</p>
+
+    <!-- Header Principal -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="brand">
+                <span class="brand-title">ConsertaAI</span>
+                <span class="brand-tag">Zeladoria Urbana Inteligente</span>
+            </div>
+            <div class="nav-actions">
+                <span class="author-badge">Autora: Erica Leandra Da Silva</span>
+                <a href="/swagger-ui.html" target="_blank" class="nav-link">Documentacao API (Swagger)</a>
+                <a href="/h2-console" target="_blank" class="nav-link">Console Banco de Dados (H2)</a>
+            </div>
         </div>
     </header>
 
-    <main class="container main-content">
-        <!-- Secao 1: Triagem Inteligente com IA -->
-        <section class="card">
-            <h2 class="card-title">Triagem de Relatos com Inteligencia Artificial</h2>
-            <p class="card-description">Digite ou cole o relato do cidadao para que o modelo de IA identifique a categoria e o nivel de urgencia automaticamente.</p>
-            
-            <div class="form-group">
-                <label for="relatoIa">Relato do Cidadao:</label>
-                <textarea id="relatoIa" rows="3" placeholder="Ex: Cratera na pista direita proximo a avenida principal causando risco de acidentes"></textarea>
+    <div class="app-layout">
+        
+        <!-- Dashboard de Metricas (KPIs) -->
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-label">Total de Ocorrencias</span>
+                <span id="kpiTotal" class="kpi-value">0</span>
             </div>
-            
-            <button id="btnTriagemIa" class="btn btn-secondary">Executar Triagem com IA</button>
-            
-            <div id="resultadoIa" class="ia-result hidden">
-                <h3>Resultado da Analise da IA</h3>
-                <p><strong>Categoria Sugerida:</strong> <span id="iaCategoria">-</span></p>
-                <p><strong>Prioridade Calculada:</strong> <span id="iaPrioridade">-</span></p>
-                <p><strong>Justificativa da IA:</strong> <span id="iaJustificativa">-</span></p>
-                <button id="btnAplicarIa" class="btn btn-small">Preencher Formulario com estes Dados</button>
+            <div class="kpi-card kpi-aberta">
+                <span class="kpi-label">Em Aberto</span>
+                <span id="kpiAbertas" class="kpi-value">0</span>
+            </div>
+            <div class="kpi-card kpi-analise">
+                <span class="kpi-label">Em Analise</span>
+                <span id="kpiEmAnalise" class="kpi-value">0</span>
+            </div>
+            <div class="kpi-card kpi-resolvida">
+                <span class="kpi-label">Resolvidas</span>
+                <span id="kpiResolvidas" class="kpi-value">0</span>
+            </div>
+            <div class="kpi-card kpi-critica">
+                <span class="kpi-label">Prioridade Critica</span>
+                <span id="kpiCriticas" class="kpi-value">0</span>
             </div>
         </section>
 
-        <!-- Secao 2: Formulario de Registro de Ocorrencia -->
-        <section class="card">
-            <h2 class="card-title">Registrar Nova Ocorrencia</h2>
-            <form id="formOcorrencia">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="categoria">Categoria:</label>
-                        <select id="categoria" required>
-                            <option value="">Selecione...</option>
-                            <option value="BURACO_VIA">BURACO_VIA (Buraco na Via)</option>
-                            <option value="ILUMINACAO_PUBLICA">ILUMINACAO_PUBLICA (Iluminacao Publica)</option>
-                            <option value="LIXO_ACUMULADO">LIXO_ACUMULADO (Lixo Acumulado)</option>
-                            <option value="OUTRO">OUTRO (Geral)</option>
-                        </select>
+        <div class="main-grid">
+            
+            <!-- Coluna 1: Entrada de Dados e IA -->
+            <aside class="sidebar-column">
+                
+                <!-- Card 1: Triagem Inteligente com IA -->
+                <div class="panel-card panel-ai">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Triagem com Inteligencia Artificial</h2>
+                        <span class="badge-tech">NLP / IA</span>
                     </div>
+                    <p class="panel-subtitle">Cole ou digite o relato bruto do cidadao para deteccao automatica de categoria e urgencia.</p>
+                    
                     <div class="form-group">
-                        <label for="endereco">Endereco / Ponto de Referencia:</label>
-                        <input type="text" id="endereco" placeholder="Ex: Av. Paulista, 1000" required>
+                        <label for="relatoIa">Relato do Cidadao:</label>
+                        <textarea id="relatoIa" rows="3" placeholder="Ex: Poste apagado ha semanas em frente a escola gerando risco a noite"></textarea>
+                    </div>
+
+                    <button id="btnTriagemIa" class="btn btn-secondary btn-block">Executar Analise de IA</button>
+
+                    <!-- Resultado da IA -->
+                    <div id="resultadoIa" class="ai-box hidden">
+                        <div class="ai-box-header">
+                            <span class="ai-box-title">Resultado da Analise</span>
+                        </div>
+                        <div class="ai-metric">
+                            <span class="ai-label">Categoria:</span>
+                            <span id="iaCategoria" class="ai-val">-</span>
+                        </div>
+                        <div class="ai-metric">
+                            <span class="ai-label">Prioridade:</span>
+                            <span id="iaPrioridade" class="ai-val">-</span>
+                        </div>
+                        <p id="iaJustificativa" class="ai-justification">-</p>
+                        <button id="btnAplicarIa" class="btn btn-outline btn-block btn-sm">Aplicar Dados ao Formulario</button>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="descricao">Descricao da Ocorrencia:</label>
-                    <textarea id="descricao" rows="2" placeholder="Descreva o problema observado no local" required></textarea>
+                <!-- Card 2: Formulario de Registro de Ocorrencia -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Registrar Ocorrencia</h2>
+                        <span class="badge-tech">RESTful POST</span>
+                    </div>
+                    
+                    <form id="formOcorrencia">
+                        <div class="form-group">
+                            <label for="categoria">Categoria:</label>
+                            <select id="categoria" required>
+                                <option value="">Selecione uma categoria...</option>
+                                <option value="BURACO_VIA">BURACO_VIA (Vias e Asfalto)</option>
+                                <option value="ILUMINACAO_PUBLICA">ILUMINACAO_PUBLICA (Iluminacao)</option>
+                                <option value="LIXO_ACUMULADO">LIXO_ACUMULADO (Limpeza e Residuos)</option>
+                                <option value="OUTRO">OUTRO (Geral / Outros)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descricao">Descricao do Problema:</label>
+                            <textarea id="descricao" rows="2" placeholder="Descricao detalhada do ocorrido" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endereco">Endereco / Referencia:</label>
+                            <input type="text" id="endereco" placeholder="Ex: Av. Paulista, 1500 - Bela Vista" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="latitude">Latitude:</label>
+                                <input type="number" step="any" id="latitude" value="-23.5614" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="longitude">Longitude:</label>
+                                <input type="number" step="any" id="longitude" value="-46.6559" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Salvar no Banco de Dados</button>
+                    </form>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="latitude">Latitude:</label>
-                        <input type="number" step="any" id="latitude" value="-23.5614" required>
+            </aside>
+
+            <!-- Coluna 2: Tabela de Ocorrencias e Gestao de Estados -->
+            <section class="content-column">
+                <div class="panel-card">
+                    
+                    <div class="table-header-bar">
+                        <div>
+                            <h2 class="panel-title">Gestao de Ocorrencias Urbanas</h2>
+                            <p class="panel-subtitle">Acompanhamento e transicao da maquina de estados (State Pattern).</p>
+                        </div>
+                        <button id="btnAtualizarLista" class="btn btn-sm btn-outline">Recarregar Dados</button>
                     </div>
-                    <div class="form-group">
-                        <label for="longitude">Longitude:</label>
-                        <input type="number" step="any" id="longitude" value="-46.6559" required>
+
+                    <!-- Barra de Filtros e Busca em Tempo Real -->
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <input type="text" id="filtroTexto" placeholder="Filtrar por protocolo, endereco ou descricao...">
+                        </div>
+                        <div class="select-filter">
+                            <select id="filtroStatus">
+                                <option value="TODOS">Todos os Status</option>
+                                <option value="Aberta">Aberta</option>
+                                <option value="EmAnalise">Em Analise</option>
+                                <option value="Resolvida">Resolvida</option>
+                                <option value="Reaberta">Reaberta</option>
+                            </select>
+                        </div>
+                        <div class="select-filter">
+                            <select id="filtroCategoria">
+                                <option value="TODAS">Todas as Categorias</option>
+                                <option value="BURACO_VIA">BURACO_VIA</option>
+                                <option value="ILUMINACAO_PUBLICA">ILUMINACAO_PUBLICA</option>
+                                <option value="LIXO_ACUMULADO">LIXO_ACUMULADO</option>
+                                <option value="OUTRO">OUTRO</option>
+                            </select>
+                        </div>
                     </div>
+
+                    <!-- Tabela de Registros -->
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Protocolo</th>
+                                    <th>Categoria</th>
+                                    <th>Prioridade</th>
+                                    <th>Status (State Pattern)</th>
+                                    <th>Localizacao</th>
+                                    <th class="text-right">Acoes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaOcorrencias">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">Carregando dados do banco...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+
+    <!-- Modal para Transicao de Estados -->
+    <div id="modalStatus" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitulo" class="modal-title">Avancar Status da Ocorrencia</h3>
+                <button id="btnFecharModal" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modalProtocolo">
+                <input type="hidden" id="modalNovoStatus">
+                
+                <div id="campoResponsavel" class="form-group">
+                    <label for="modalResponsavel">Responsavel / Equipe Tecnica:</label>
+                    <input type="text" id="modalResponsavel" placeholder="Ex: Equipe de Obras e Pavimentacao Setor Norte">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Registrar Ocorrencia</button>
-            </form>
-        </section>
-
-        <!-- Secao 3: Painel de Ocorrencias e Ciclo de Vida -->
-        <section class="card">
-            <div class="card-header-flex">
-                <h2 class="card-title">Painel de Ocorrencias Registradas</h2>
-                <button id="btnAtualizarLista" class="btn btn-small">Atualizar Lista</button>
+                <div id="campoObservacao" class="form-group">
+                    <label for="modalObservacao">Observacao / Motivo:</label>
+                    <textarea id="modalObservacao" rows="3" placeholder="Informe detalhes da execucao ou motivo da reabertura"></textarea>
+                </div>
             </div>
-
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Protocolo</th>
-                            <th>Categoria</th>
-                            <th>Prioridade</th>
-                            <th>Status Atual</th>
-                            <th>Endereco</th>
-                            <th>Acoes (Maquina de Estados)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaOcorrencias">
-                        <tr>
-                            <td colspan="6" class="text-center">Carregando ocorrencias...</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="modal-footer">
+                <button id="btnCancelarModal" class="btn btn-sm btn-outline">Cancelar</button>
+                <button id="btnConfirmarModal" class="btn btn-sm btn-primary">Confirmar Transicao</button>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>ConsertaAI | Desenvolvido por <strong>Erica Leandra Da Silva</strong></p>
-            <p><a href="/swagger-ui.html" target="_blank">Documentacao OpenAPI (Swagger)</a></p>
+    <!-- Container de Notificacoes Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <footer class="app-footer">
+        <div class="container footer-content">
+            <span>ConsertaAI - Plataforma de Zeladoria Urbana Inteligente</span>
+            <span>Desenvolvido por <strong>Erica Leandra Da Silva</strong></span>
+            <span>Java 21 | Spring Boot 3 | Clean Architecture | GoF Patterns</span>
         </div>
     </footer>
 

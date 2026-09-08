@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: consertaai-postgres
+    environment:
+      POSTGRES_DB: consertaai_db
+      POSTGRES_USER: consertaai_user
+      POSTGRES_PASSWORD: consertaai_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - consertaai_pgdata:/var/lib/postgresql/data
+
+volumes:
+  consertaai_pgdata:
