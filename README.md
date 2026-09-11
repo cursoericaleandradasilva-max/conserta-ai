@@ -7,6 +7,17 @@ ConsertaAI e uma plataforma de zeladoria urbana para cidades inteligentes. O cid
 
 ---
 
+## Acesso ao Projeto em Producao
+
+O projeto esta publicado e acessivel publicamente no Railway:
+
+- Aplicacao (interface web): https://conserta-ai-production.up.railway.app
+- Documentacao interativa da API (Swagger): https://conserta-ai-production.up.railway.app/swagger-ui/index.html
+
+Ao acessar o endereco principal, a interface web carrega automaticamente com um painel de gestao de ocorrencias, incluindo um formulario de triagem com Inteligencia Artificial e a listagem de ocorrencias cadastradas no banco de dados.
+
+---
+
 ## Padroes de Projeto Aplicados (GoF e Spring Framework)
 
 O projeto foi arquitetado como uma vitrine pratica dos principais Design Patterns do GoF (Gang of Four) combinados com os padroes nativos do Spring Framework:
@@ -96,12 +107,31 @@ src/main/java/com/ericajavaproagent/consertaai/
 
 ---
 
-## Como Executar
+## Como Utilizar (Ambiente em Producao)
+
+1. Acesse https://conserta-ai-production.up.railway.app no navegador.
+2. Na secao "Gestao de Ocorrencias Urbanas", visualize as ocorrencias ja cadastradas, com filtros por protocolo, endereco, status e categoria.
+3. Para registrar uma nova ocorrencia manualmente, preencha o formulario "Registrar Ocorrencia" com categoria, descricao, endereco e coordenadas, e clique em "Salvar no Banco de Dados".
+4. Para testar a triagem automatica com Inteligencia Artificial, cole um relato livre do cidadao no campo "Triagem com Inteligencia Artificial" e clique em "Executar Analise de IA".
+5. Para explorar e testar os endpoints da API diretamente, acesse a documentacao Swagger em https://conserta-ai-production.up.railway.app/swagger-ui/index.html.
+
+---
+
+## Como Executar Localmente
 
 1. Abra o projeto no IntelliJ IDEA.
 2. Execute a classe principal ConsertaAiApplication.java.
 3. Acesse a documentacao interativa no Swagger:
    http://localhost:8080/swagger-ui.html
+
+---
+
+## Infraestrutura de Deploy
+
+- Hospedagem: Railway
+- Build: Dockerfile multi-estagio (compilacao com Maven em Java 21, execucao em imagem enxuta com JRE 21)
+- Banco de dados em producao: PostgreSQL (gerenciado pelo Railway)
+- Banco de dados em desenvolvimento local: H2 em arquivo
 
 ---
 
